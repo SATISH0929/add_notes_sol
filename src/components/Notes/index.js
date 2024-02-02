@@ -1,4 +1,4 @@
-import {Component, useState} from 'react'
+import {useState} from 'react'
 import NoteItem from '../NoteItem'
 import {
   MainContainer,
@@ -14,7 +14,7 @@ import {
   Paragraph,
 } from './styledComponents'
 
-class Notes extends Component {
+const Notes = () => {
   const [titleInput, setTitleInput] = useState('')
   const [notesInput, setNotesInput] = useState('')
   const [result, setResult] = useState(false)
@@ -30,45 +30,44 @@ class Notes extends Component {
   const onClickSubmit = event => {
     event.preventDefault()
     setResult(true)
+    setTitleInput('')
+    setNotesInput('')
   }
 
-  render() {
-    const {titleInput, notesInput, result} = this.state
-    return (
-      <MainContainer>
-        <Heading>Notes</Heading>
-        <InputContainer>
-          <Input
-            onChange={onChangeTitleInput}
-            value={titleInput}
-            placeholder="Title"
+  return (
+    <MainContainer>
+      <Heading>Notes</Heading>
+      <InputContainer>
+        <Input
+          onChange={onChangeTitleInput}
+          value={titleInput}
+          placeholder="Title"
+        />
+        <InputTextArea
+          onChange={onChangeNotesInput}
+          value={notesInput}
+          placeholder="Take a note..."
+        />
+        <Button type="submit" onClick={onClickSubmit}>
+          Add
+        </Button>
+      </InputContainer>
+      {result === true ? (
+        <ItemListContainer>
+          <NoteItem titleInput={titleInput} notesInput={notesInput} />
+        </ItemListContainer>
+      ) : (
+        <NoNotesContainer>
+          <Image
+            src="https://assets.ccbp.in/frontend/hooks/empty-notes-img.png"
+            alt="notes empty"
           />
-          <InputTextArea
-            onChange={onChangeNotesInput}
-            value={notesInput}
-            placeholder="Take a note..."
-          />
-          <Button type="submit" onClick={onClickSubmit}>
-            Add
-          </Button>
-        </InputContainer>
-        {result === true ? (
-          <ItemListContainer>
-            <NoteItem titleInput={titleInput} notesInput={notesInput} />
-          </ItemListContainer>
-        ) : (
-          <NoNotesContainer>
-            <Image
-              src="https://assets.ccbp.in/frontend/hooks/empty-notes-img.png"
-              alt="notes empty"
-            />
-            <NotesHeading>No Notes Yet</NotesHeading>
-            <Paragraph>Notes you add will appear here</Paragraph>
-          </NoNotesContainer>
-        )}
-      </MainContainer>
-    )
-  }
+          <NotesHeading>No Notes Yet</NotesHeading>
+          <Paragraph>Notes you add will appear here</Paragraph>
+        </NoNotesContainer>
+      )}
+    </MainContainer>
+  )
 }
 
 export default Notes
